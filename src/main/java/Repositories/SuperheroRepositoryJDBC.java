@@ -48,7 +48,7 @@ public class SuperheroRepositoryJDBC {
     public List<Superhero> superheroes(String name) {
         List<Superhero> superhero = new ArrayList<>();
         try (Connection con = DriverManager.getConnection(url, user, password)) {
-            String SQL = "SELECT * FROM superhero WHERE hero_name NOT NULL";
+            String SQL = "SELECT heroName FROM hero_name WHERE heroName NOT NULL";
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(SQL);
 
@@ -72,7 +72,7 @@ public class SuperheroRepositoryJDBC {
         List<SuperheroCountDTO> superheroCountDTOList = new ArrayList<>();
 
         try (Connection con = DriverManager.getConnection(url, user, password)) {
-            String SQL = "SELECT hero_name, real_name, creation_year, city_name, superpower FROM superhero AS count";
+            String SQL = "SELECT hero_name, real_name, creation_year, city_name, superpower FROM superheroDB AS count";
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(SQL);
 
@@ -93,14 +93,15 @@ public class SuperheroRepositoryJDBC {
         List<SuperheroWithSuperpowersDTO> superpowersDTOList = new ArrayList<>();
 
         try (Connection con = DriverManager.getConnection(url, user, password)) {
-            String SQL = "SELECT something";
+            String SQL = "SELECT heroName FROM hero_name JOIN superpower AS count";
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(SQL);
 
             while (rs.next()) {
                 String heroName = rs.getString("hero_name");
+                String superpower = rs.getString("superpower");
                 int count = rs.getInt("count");
-                superpowersDTOList = (List<SuperheroWithSuperpowersDTO>) new SuperheroWithSuperpowersDTO(heroName, count);
+                superpowersDTOList.add(new SuperheroWithSuperpowersDTO(heroName, superpower, count));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -113,14 +114,14 @@ public class SuperheroRepositoryJDBC {
         List<SuperheroWithCityDTO> superheroWithCityDTOS = new ArrayList<>();
 
         try (Connection con = DriverManager.getConnection(url, user, password)) {
-            String SQL = "SELECT hero_name FROM superhero JOIN city_name";
+            String SQL = "SELECT hero_name FROM superheroDB JOIN city_name";
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(SQL);
 
             while (rs.next()) {
                 String heroName = rs.getString("hero_name");
                 String cityName = rs.getString("city_name");
-                superheroWithCityDTOS = (List<SuperheroWithCityDTO>) new SuperheroWithCityDTO(heroName, cityName);
+                superheroWithCityDTOS.add(new SuperheroWithCityDTO(heroName, cityName));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -18,7 +18,7 @@ public class SuperheroWithSuperpowersDTO {
         this.count = count;
     }
 
-    public SuperheroWithSuperpowersDTO(String heroName, int count) {
+    public SuperheroWithSuperpowersDTO(String name, String heroName, int count) {
     }
 
     // getters and setters
